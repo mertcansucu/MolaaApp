@@ -33,7 +33,6 @@ namespace MolaaApp.Controllers
         public async Task<IActionResult> Create(CreateViewModel model,IFormFile imageFile){
             if (ModelState.IsValid)
             {
-                
                 var extension = Path.GetExtension(imageFile.FileName);//dosyanın uzantısını alır ; mesela burda imageFile.FileName buna bakar abc.jpg ise "jpg" kısmını alır
                 var randomFileName = string.Format($"{Guid.NewGuid().ToString()}{extension}");//burda random isim oluşturup(Guid.NewGuid()) üste dosyadan aldığım uzatıyı ekliyorum direk
                 var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/img", randomFileName);
@@ -86,5 +85,59 @@ namespace MolaaApp.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]//kullanıcı güncellemesi 
+        public async Task<IActionResult> Edit(string id, EditViewModel model,IFormFile? imageFile){//IFormFile? resim seçilme zorunluluğunu kaldırdım
+            if (id != model.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.Id);//Id ile o kullanıcıyı aldım
+
+                if (user != null)
+                {
+                    if (imageFile != null)
+                    {
+                        var extension = Path.GetExtension(imageFile.FileName);//dosyanın uzantısını alır ; mesela burda imageFile.FileName buna bakar abc.jpg ise "jpg" kısmını alır
+                        var randomFileName = string.Format($"{Guid.NewGuid().ToString()}{extension}");//burda random isim oluşturup(Guid.NewGuid()) üste dosyadan aldığım uzatıyı ekliyorum direk
+                        var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/img", randomFileName);
+
+                        //resim eklenmesinde sorun olmazsa burda stremi oluşturuyorum çünkü kapsamdan çıktığında bellekten silinsin diye
+                        using(var stream = new FileStream(path, FileMode.Create)){
+                        await imageFile.CopyToAsync(stream);//ilgili dizine kopyaladım resmi ve çalışması için Task<IActionResult> yaptım
+                        }
+                        model.Image = randomFileName;
+                    }
+                    
+                    user.FullName = model.FullName;//kullanıcı tablosundaki bilgiyi modeldeki değerle güncelledim
+                    user.Email = model.Email;//kullanıcı tablosundaki bilgiyi modeldeki değerle güncelledim
+                    user.Image = model.Image;
+
+                    var result = await _userManager.UpdateAsync(user);
+                    
+
+                    //şifre güncellemesini zorunlu yapmadım ama admin istediği zaman kullanıcı şifresini değiştirebilir onuda:
+                    if (result.Succeeded && !string.IsNullOrEmpty(model.Password))//result.Succeeded && !string.IsNullOrEmpty(model.Password) burda diyorum ki durum başarılı ve model view de password alanı boş değilse bu koşulun içine gir ve kullanıcı da kayıtlı olan şifreyi sil ve model view de yazdığım şifreyi userın yeni şifresi yap
+                    {
+                        await _userManager.RemovePasswordAsync(user);
+                        await _userManager.AddPasswordAsync(user, model.Password);
+
+                        
+                    }
+                    
+                    foreach (IdentityError err in result.Errors)
+                    {
+                        ModelState.AddModelError("",err.Description);
+                    }
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(model);
+        } 
+        
     }
 }

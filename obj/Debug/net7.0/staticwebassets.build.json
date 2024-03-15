@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rgLJpQxveZ7f/fuhsyijx5EIL13/tHKqKtzbMU8f6H8=",
+  "Hash": "Bvs+vyFMzwPVWyi7MwXSvN2A4f4Qhp9LArINofApVS4=",
   "Source": "MolaaApp",
   "BasePath": "_content/MolaaApp",
   "Mode": "Default",
@@ -85,12 +85,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\img\\0a528b8c-3fee-4fcf-8704-5b2384d4843d.jpg",
+      "Identity": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\img\\f37ff3ad-0288-4f53-82f9-a55b748a3b46.jpg",
       "SourceId": "MolaaApp",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\",
       "BasePath": "_content/MolaaApp",
-      "RelativePath": "img/0a528b8c-3fee-4fcf-8704-5b2384d4843d.jpg",
+      "RelativePath": "img/f37ff3ad-0288-4f53-82f9-a55b748a3b46.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -99,24 +99,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\img\\0a528b8c-3fee-4fcf-8704-5b2384d4843d.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\img\\d03f9033-3476-4921-a338-40487009b80c.jpg",
-      "SourceId": "MolaaApp",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\",
-      "BasePath": "_content/MolaaApp",
-      "RelativePath": "img/d03f9033-3476-4921-a338-40487009b80c.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\img\\d03f9033-3476-4921-a338-40487009b80c.jpg"
+      "OriginalItemSpec": "wwwroot\\img\\f37ff3ad-0288-4f53-82f9-a55b748a3b46.jpg"
     },
     {
       "Identity": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\img\\mcs.jpg",

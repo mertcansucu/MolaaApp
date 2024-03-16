@@ -76,11 +76,14 @@ namespace MolaaApp.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
+                ViewBag.Roles = _roleManager.Roles.Select(i => i.Name).ToList();//viewbag üzerinden ben role tablosundan sadece role isimlerini aldım ve kullanıcı seçsin diye view sayfasında burdan aldığım bilgileri getirip seçtiricem
+
                 return View(new EditViewModel{
                     Id = user.Id,
                     FullName = user.FullName,
                     Email = user.Email,
-                    Image = user.Image
+                    Image = user.Image,
+                    SelectedRoles = await _userManager.GetRolesAsync(user)//bu komutla kullanıcıya atanmış rolleri ben alabilicem veritabanından ve sayfada göstericem
                 });
             }
             return RedirectToAction("Index");

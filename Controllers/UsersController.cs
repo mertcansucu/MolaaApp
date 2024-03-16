@@ -130,6 +130,16 @@ namespace MolaaApp.Controllers
 
                         
                     }
+                    if (result.Succeeded)
+                    {
+                        await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));//ben her editleme işleminde o kullanıcıya ait rol bilgilerini başta sildim
+
+                        if (model.SelectedRoles != null)//eğer ben editte bir rol seçtiysem ekleme yapıcam
+                        {
+                            await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+                        }
+                        return RedirectToAction("Index");
+                    }
                     
                     foreach (IdentityError err in result.Errors)
                     {

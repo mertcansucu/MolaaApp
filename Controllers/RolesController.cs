@@ -89,5 +89,23 @@ namespace MolaaApp.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id){
+            var role = await _roleManager.FindByIdAsync(id);
+            if (role != null)
+            {
+                var result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                foreach (var err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+            }
+            return RedirectToAction("Index");
+        } 
     }
 }

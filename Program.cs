@@ -9,7 +9,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlite(builder.Configuration["ConnectionStrings:SqLite_Connection"]));
 
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<IdentityContext>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
+
+//**AddDefaultTokenProviders() bu bize->parola yenileme,sıfırlama,email sıfırlama email onaylı hale getirmek için bize token bilgisi üretir
 
 builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequireDigit = false;
@@ -25,6 +27,9 @@ builder.Services.Configure<IdentityOptions>(options => {
     //kullanıcı login işleminde ben kullanıcıya 5 hak vericem eğer 5 seferde login olamazsa hesabını 5 dk kitliyicem ve kullanıcı giriş yapamıyacak
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
+
+    //giriş için email onayı olmasını istediğim için bunu aktif etmem lazım başlangıçta bu false du nem bunu aktif yaptım
+    options.SignIn.RequireConfirmedEmail = true;
 
 });
 

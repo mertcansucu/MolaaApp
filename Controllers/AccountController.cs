@@ -39,9 +39,12 @@ namespace MolaaApp.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model){
-            
+
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
+
+            if (ModelState.IsValid)
+            {
+                if (user != null)
                 {
                     await _signInManager.SignOutAsync();//başlangıçta kullanıcı daha önce giriş yapmışsa cookie sini sıfırladım
 
@@ -57,7 +60,7 @@ namespace MolaaApp.Controllers
                     /*
                     bu kodda:var result = await _signInManager.PasswordSignInAsync(user, model.Password, 
                     model.RememberMe,=> burda eğer bu şeçili olursa tarayıcı kapandığında bile tekrar uygulamayı açınca kullanıcı girişi olmuş şekilde gelir beni hatırla yani
-                    true)=> bu kod ise program.cs de ben 5 hak vermiştim kullanıcıya hatalı giriş için ben bunu geçerli kıldım bunu false yaparsam kullanıcı istediği kadar hatalı girebilir
+                    true)=> bu kod ise programcs de ben 5 hak vermiştim kullanıcıya hatalı giriş için ben bunu geçerli kıldım bunu false yaparsam kullanıcı istediği kadar hatalı girebilir
                     */
 
                     if (result.Succeeded)//giriş başarılı durumu
@@ -82,6 +85,7 @@ namespace MolaaApp.Controllers
                 }else{
                     ModelState.AddModelError("","Bu Email adresiyle bir hesap bulunamadı!");
                 }
+            }
 
 
             return View(model);
@@ -198,6 +202,47 @@ namespace MolaaApp.Controllers
 
             return View();
             
+        }
+
+        public IActionResult ResetPassword(string Id,string token,string Email){
+            //var url = Url.Action("ResetPassword","Account",new{user.Id, token}yukarıda zaten bu bilgileri alıyorum ben bu sayfaya bu bilgileri gönderip yeni şifre oluşturup, şifreyi güncelliyicem
+
+            if (Id == null || token == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var model = new ResetPasswordModel {Token = token};
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model){
+            if (ModelState.IsValid)
+            {
+                
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user == null)
+                {
+                    TempData["message"] = "Bu mail adresiyle eşleşen kullanıcı yok";
+                    return RedirectToAction("Login");
+                }
+                var result = await _userManager.ResetPasswordAsync(user, model.Token,model.Password);
+
+                if (result.Succeeded)
+                {
+                    TempData["message"] = "Şifreniz değiştirildi";
+                    return RedirectToAction("Login");
+                }
+
+                foreach (IdentityError err in result.Errors)
+                {
+                    ModelState.AddModelError("",err.Description);
+                }
+            }
+
+            return View(model);
         }
     }
 }

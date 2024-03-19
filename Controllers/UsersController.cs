@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MolaaApp.Models;
@@ -9,6 +10,13 @@ using MolaaApp.ViewModels;
 
 namespace MolaaApp.Controllers
 {
+    [Authorize(Roles ="admin")]//ben burda diyorum ki rolü admin olan kişiler sadece burdaki linklere erişebilsin, yani normal bir kullanıcı girip de linke users yapıp o sayfaya gidebiliyordu onu engelledim
+    //[AllowAnonymous]//**bunu dersem diyorum ki admin rolündeki bir kişi burdaki linklere gidebiliyordu ama ben bunu diyerek diyorum ki bu sayfaya bütün rollerdeki kullanıcılar gitsin diğerler linklere ise gidemsin diyorum yani sadece bir linki diğerlerinden farklı yapmış oluyorum
+    //ya da şöyle yaparım ben buraya [Authorize(Roles ="admin")] bunu diyerek sadece buraya admin rolündeki sadece gitsin ama diğer linklere herkes gidebilir diyebilirim, veya [Authorize(Roles ="admin,customer")] bu roldeki kişiler girebilir diyebilirim
+    // if (!User.IsInRole("admin"))
+    //         {
+    //             return RedirectToAction("Login","Account");
+    //         }
     public class UsersController:Controller
     {
         private UserManager<AppUser> _userManager;//usertablosundaki verileri veritabnından getirdim

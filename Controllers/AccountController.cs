@@ -162,5 +162,10 @@ namespace MolaaApp.Controllers
             TempData["message"] = "Kullanıcı bulunamadı";
             return View();
         }
+
+         public async Task<IActionResult> Logout(){
+            await _signInManager.SignOutAsync();//network altında oluşan cookie yi sildi
+            return RedirectToAction("Login");
+        }
     }
 }

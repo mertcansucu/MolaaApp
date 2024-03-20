@@ -21,5 +21,6 @@ namespace BlogApp.Entity
         public AppUser User { get; set; } = null!;//navigation prop,joinleme,null!=>bu kısmın boş kalmayacağını söylüyorum,bir postu bir user yayınlayacağı için böyle yaptım,birden fazla olasaydı liste şeklinde yapacaktım
         public List<Tag> Tags { get; set; } = new List<Tag>();//Bir posta birden fazla etiket olabieceği için liste şeklinde bağlantıyı sağladım
         public List<Comment> Comments { get; set; } = new List<Comment>();//Her bir posta birden fazla yorum olabilir
+        public List<Like> Likes { get; set; } = new List<Like>(); // Bir posta birden fazla like alabilir
     }
 }

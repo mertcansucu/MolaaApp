@@ -67,6 +67,7 @@ namespace MolaaApp.Controllers
                     new Post{
                         Title = model.Title,
                         Content = model.Content,
+                        Description = model.Description,
                         Url = model.Url,
                         UserId = userId ?? "",
                         PubilshedOn = DateTime.Now,

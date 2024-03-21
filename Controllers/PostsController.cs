@@ -33,8 +33,12 @@ namespace MolaaApp.Controllers
             
         }
         public IActionResult Index(){
-            return View(_postRepository.Posts.ToList());
-        }
+            var model = new PostsViewModel{
+                Posts = _postRepository.Posts.ToList()
+                };
+                return View(model);
+            }
+
 
         [Authorize] // kullanıvı giriş yapmadan post ekleme yapmasını engellemek için bunu ekledim
         public IActionResult Create(){

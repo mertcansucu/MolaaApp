@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MolaaApp.Entity;
 using MolaaApp.Models;
 
-namespace BlogApp.Entity
+namespace MolaaApp.Entity
 {
     public class Post
     {

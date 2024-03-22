@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlogApp.Entity;
-using Microsoft.AspNetCore.Identity;
 using MolaaApp.Entity;
+using Microsoft.AspNetCore.Identity;
 
 namespace MolaaApp.Models
 {

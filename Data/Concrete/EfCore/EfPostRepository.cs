@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlogApp.Entity;
+using MolaaApp.Entity;
 using MolaaApp.Data.Abstract;
 using MolaaApp.Models;
 

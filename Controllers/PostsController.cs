@@ -81,8 +81,9 @@ namespace MolaaApp.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Details (int? id){
-            return View(await _postRepository.Posts.FirstOrDefaultAsync(p => p.PostId == id));
+        //önceden url de id bilgisi vardı ben bunu url ile değiştirdim
+        public async Task<IActionResult> Details (string url){
+            return View(await _postRepository.Posts.FirstOrDefaultAsync(p => p.Url== url));
         }
 
     }

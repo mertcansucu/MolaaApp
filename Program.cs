@@ -73,9 +73,16 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+//ben ekranda url kısmını değiştirmek istiyorum onun için eklemeler yapıcam ve benim şstediğim şekli:
+//post icin iliskilendirme
+app.MapControllerRoute(
+    name: "post_details",
+    pattern: "posts/details/{url}",//posts sabit yer diğer kısım ise sayfanın urlsini çekmek olacak
+    defaults: new {controller = "Posts",action="Details"}
+);
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Posts}/{action=Index}/{id?}");
 
 IdentitySeedData.IdentityTestUser(app);//IdentitySeedData yani test verilerini ekledim
 

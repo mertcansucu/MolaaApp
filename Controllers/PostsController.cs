@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MolaaApp.Data.Abstract;
 using MolaaApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MolaaApp.Controllers
 {
@@ -78,6 +79,10 @@ namespace MolaaApp.Controllers
                 return RedirectToAction("Index");
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> Details (int? id){
+            return View(await _postRepository.Posts.FirstOrDefaultAsync(p => p.PostId == id));
         }
 
     }

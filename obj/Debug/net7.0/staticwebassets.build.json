@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "EiSCxobS5SB6aCu3AolIz9S+G3Y1Hk2VXW14Eqhqlfs=",
+  "Hash": "+S6JBahtAZe3TfrBgfTgy18N54Kgq+NzXmPkR0Z5kqo=",
   "Source": "MolaaApp",
   "BasePath": "_content/MolaaApp",
   "Mode": "Default",
@@ -168,6 +168,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\7282bb77-ccae-486e-90d8-1123beb8ca92.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\img\\7a6b7e09-20d1-4695-8d09-37a4cf3be481.jpg",
+      "SourceId": "MolaaApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\",
+      "BasePath": "_content/MolaaApp",
+      "RelativePath": "img/7a6b7e09-20d1-4695-8d09-37a4cf3be481.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\7a6b7e09-20d1-4695-8d09-37a4cf3be481.jpg"
     },
     {
       "Identity": "C:\\Users\\Mert Can SUCU\\OneDrive - Ataturk University\\Masaüstü\\MolaaApp\\wwwroot\\img\\865163e1-284f-4ed3-ac39-8a45071780e6.jpg",

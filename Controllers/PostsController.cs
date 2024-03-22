@@ -92,5 +92,9 @@ namespace MolaaApp.Controllers
             .FirstOrDefaultAsync(p => p.Url == url));
         }
 
+        public IActionResult AddComment(int id, string UserName, string Text){
+            return View();
+        }
+
     }
 }

@@ -28,9 +28,12 @@ namespace MolaaApp.Controllers
         private UserManager<AppUser> _userManager;//usertablosundaki verileri veritabnından getirdim
         private IPostRepository _postRepository;
 
-        public PostsController(IPostRepository postRepository,UserManager<AppUser> userManager){
+        private ICommentRepository _commentRepository;
+
+        public PostsController(IPostRepository postRepository,UserManager<AppUser> userManager,ICommentRepository commentRepository){
             _postRepository = postRepository;
             _userManager = userManager;
+            _commentRepository = commentRepository;
             
         }
         public IActionResult Index(){

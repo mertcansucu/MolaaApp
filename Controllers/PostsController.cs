@@ -95,9 +95,29 @@ namespace MolaaApp.Controllers
             .FirstOrDefaultAsync(p => p.Url == url));
         }
 
-        public IActionResult AddComment(int id, string UserName, string Text){
-            return View();
-        }
+        [HttpPost]
+        public JsonResult AddComment(int PostId, string Text){
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+        var fullName = user != null ? user.FullName : string.Empty;
+        var avatarImg = user != null ? user.Image : string.Empty;
+
+        var entity = new Comment{
+            PostId = PostId,
+            Text = Text,
+            PublishedOn = DateTime.Now,
+            UserId = userId ?? ""
+        };
+        _commentRepository.CreateComment(entity);
+    
+        return Json(new{
+            fullName, // username yerine fullName'i döndür
+            Text,
+            entity.PublishedOn,
+            avatarImg
+        });
+        }   
+
 
     }
 }

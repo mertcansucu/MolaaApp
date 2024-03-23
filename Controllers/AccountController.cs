@@ -69,7 +69,7 @@ namespace MolaaApp.Controllers
                         await _userManager.SetLockoutEndDateAsync(user,null);//bekleme süresini de sıfırladım
 
 
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("Index","Posts");
                     }else if (result.IsLockedOut)//kullanıcı girişi başarısızsa
                     {
                         var LockoutDate = await _userManager.GetLockoutEndDateAsync(user);

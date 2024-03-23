@@ -16,7 +16,22 @@
         <div class="bg-white nt-3">
             <div class="card border-0">
                 <div class="card-header pb-0">
-                    <h4><span id="commentCount">@Model.Comments.Count()</span> adet yorum</h4>
+                    <h4><span id="likeCount">@Model.Likes.Count()</span> beğeni</h4>
+                </div>
+                <div class="card-body">
+                    @if(User.Identity!.IsAuthenticated){
+                        <button id="btnBegeni" type="submit" class="btn btn-primary">BEĞEN</button>
+                    }else{
+                        <p>Beğenmek için uygulamaya giriş yapmalısınız. <a href="/Account/Login">Login</a></p>
+                    }
+                    
+                </div>
+            </div>
+        </div>
+        <div class="bg-white nt-3">
+            <div class="card border-0">
+                <div class="card-header pb-0">
+                    <h4><span id="commentCount">@Model.Comments.Count()</span> yorum</h4>
                 </div>
                 <div class="card-body">
                     <div id="comments">
@@ -102,13 +117,49 @@
                         $("#Text").val('');
                         
                         var adet = parseInt($("#commentCount").text());
-                        $("#commentCount").text(adet + 1);
-                    }
+                        $("#commentCount").text(adet + 1);}
 
                 });
 
                 return false;//buton eğer bilgileri almakta hata olursa sayfayı yenilemez ve çalışmaz
             });
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetLikeCount")',
+                dataType: 'json',
+                data: {
+                    PostId: $('#PostId').val(),
+                },
+                success: function(response) {
+                    $("#likeCount").text(response.likeCount);
+                }
+            });
+
+            
+            $("#btnBegeni").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddLike")',
+                dataType: 'json',
+                data: {
+                    PostId: $('#PostId').val(),
+                },
+                success: function(response) {
+                    var count = parseInt($("#likeCount").text());
+                    if (response.liked) {
+                        $("#likeCount").text(count + 1);
+                    } else {
+                        $("#likeCount").text(count - 1);
+                    }
+                }
+            });
+        
+            return false;
+        });
+
+       
+
 
         });
     </script>

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using MolaaApp.Data.Abstract;
 using MolaaApp.Models;
 using Microsoft.EntityFrameworkCore;
+using MolaaApp.Data.Concrete;
 
 namespace MolaaApp.Controllers
 {
@@ -30,10 +31,13 @@ namespace MolaaApp.Controllers
 
         private ICommentRepository _commentRepository;
 
-        public PostsController(IPostRepository postRepository,UserManager<AppUser> userManager,ICommentRepository commentRepository){
+        private ILikeRepository _likeRepository;
+
+        public PostsController(IPostRepository postRepository,UserManager<AppUser> userManager,ICommentRepository commentRepository,ILikeRepository likeRepository){
             _postRepository = postRepository;
             _userManager = userManager;
             _commentRepository = commentRepository;
+            _likeRepository = likeRepository;
             
         }
         public IActionResult Index(){
@@ -118,6 +122,36 @@ namespace MolaaApp.Controllers
         });
         }   
 
+        [HttpGet]
+        public JsonResult GetLikeCount(int postId)
+        {
+            var likeCount = _likeRepository.likes.Count(l => l.PostId == postId);
+            return Json(new { likeCount = likeCount });
+        }
 
+
+        [HttpPost]
+        public JsonResult AddLike(int postId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var existingLike = _likeRepository.likes.FirstOrDefault(l => l.UserId == userId && l.PostId == postId);
+
+
+            if (existingLike != null)
+            {
+                // Kullanıcı daha önce bu gönderiyi beğenmişse like'ı kaldır
+                _likeRepository.RemoveLike(existingLike);
+                return Json(new { liked = false });
+            }
+            else
+            {
+                // Kullanıcı daha önce bu gönderiyi beğenmemişse like'ı ekleyerek işlemi gerçekleştir
+                _likeRepository.AddLike(new Like { UserId = userId ?? "", PostId = postId });
+                return Json(new { liked = true });
+            }
+        }
+
+        
+        
     }
 }

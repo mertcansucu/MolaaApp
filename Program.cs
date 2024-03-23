@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MolaaApp.Data.Abstract;
 using MolaaApp.Data.Concrete;
+using MolaaApp.Data.Concrete.EfCore;
 using MolaaApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -54,6 +55,7 @@ builder.Services.ConfigureApplicationCookie(options =>{//cookie ayarları
 
 builder.Services.AddScoped<IPostRepository, EfPostRepository>();//ben burda diyorum ki IPostRepository ben sanalı göderdiğimde sen bana EfPostRepository ile gerçek halini bana gönder,AddScoped olmasının nedeni her http reqository aynı nesneyi gönderir yani her http requestinde bir nesne yolla
 builder.Services.AddScoped<ICommentRepository, EfCommentRepository>();
+builder.Services.AddScoped<ILikeRepository, EfLikeRepository>();
 
 var app = builder.Build();
 

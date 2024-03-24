@@ -10,7 +10,7 @@ using MolaaApp.ViewModels;
 
 namespace MolaaApp.Controllers
 {
-    [Authorize(Roles ="admin")]//ben burda diyorum ki rolü admin olan kişiler sadece burdaki linklere erişebilsin, yani normal bir kullanıcı girip de linke users yapıp o sayfaya gidebiliyordu onu engelledim
+    //[Authorize(Roles ="admin")]ben burda diyorum ki rolü admin olan kişiler sadece burdaki linklere erişebilsin, yani normal bir kullanıcı girip de linke users yapıp o sayfaya gidebiliyordu onu engelledim
     //[AllowAnonymous]//**bunu dersem diyorum ki admin rolündeki bir kişi burdaki linklere gidebiliyordu ama ben bunu diyerek diyorum ki bu sayfaya bütün rollerdeki kullanıcılar gitsin diğerler linklere ise gidemsin diyorum yani sadece bir linki diğerlerinden farklı yapmış oluyorum
     //ya da şöyle yaparım ben buraya [Authorize(Roles ="admin")] bunu diyerek sadece buraya admin rolündeki sadece gitsin ama diğer linklere herkes gidebilir diyebilirim, veya [Authorize(Roles ="admin,customer")] bu roldeki kişiler girebilir diyebilirim
     // if (!User.IsInRole("admin"))
@@ -30,16 +30,23 @@ namespace MolaaApp.Controllers
             _roleManager = roleManager;
         }
 
+        [Authorize(Roles ="admin")]
         public IActionResult Index(){
             return View(_userManager.Users);
         }
 
        
-
+       [Authorize]
         public async Task<IActionResult> Edit(string id){
             if (id == null)
             {
                 return RedirectToAction("Index");
+            }
+            
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null || currentUser.Id != id && !User.IsInRole("admin"))
+            {
+                return Forbid();
             }
 
             var user = await _userManager.FindByIdAsync(id);
@@ -55,14 +62,21 @@ namespace MolaaApp.Controllers
                     SelectedRoles = await _userManager.GetRolesAsync(user)//bu komutla kullanıcıya atanmış rolleri ben alabilicem veritabanından ve sayfada göstericem
                 });
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Posts");
         }
 
+        [Authorize]
         [HttpPost]//kullanıcı güncellemesi 
         public async Task<IActionResult> Edit(string id, EditViewModel model,IFormFile? imageFile){//IFormFile? resim seçilme zorunluluğunu kaldırdım
             if (id != model.Id)
             {
                 return RedirectToAction("Index");
+            }
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null || currentUser.Id != id && !User.IsInRole("admin"))
+            {
+                return Forbid();
             }
 
             if (ModelState.IsValid)
@@ -103,24 +117,25 @@ namespace MolaaApp.Controllers
                     {
                         await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));//ben her editleme işleminde o kullanıcıya ait rol bilgilerini başta sildim
 
-                        if (model.SelectedRoles != null)//eğer ben editte bir rol seçtiysem ekleme yapıcam
+                        if (User.IsInRole("admin") && model.SelectedRoles != null)//eğer ben editte bir rol seçtiysem ekleme yapıcam
                         {
                             await _userManager.AddToRolesAsync(user, model.SelectedRoles);
                         }
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index","Posts");
                     }
                     
                     foreach (IdentityError err in result.Errors)
                     {
                         ModelState.AddModelError("",err.Description);
                     }
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index","Posts");
                 }
             }
 
             return View(model);
         }
 
+        [Authorize(Roles ="admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(string id){
             var user = await _userManager.FindByIdAsync(id);

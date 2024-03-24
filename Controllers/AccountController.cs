@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MolaaApp.Models;
 using MolaaApp.ViewModels;
 
@@ -243,6 +244,26 @@ namespace MolaaApp.Controllers
             }
 
             return View(model);
+        }
+
+        public IActionResult Profile(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return NotFound();
+            }
+
+            var user = _userManager
+                       .Users
+                       .Include(x => x.Posts)
+                       .Include(x => x.Comments)
+                       .ThenInclude(x => x.Post)//üstekiler users tablosundan çektim ama burda commentsin içindeki postu çektim [@comment.Post.Title] profile.cshtml
+                       .FirstOrDefault(x => x.UserName == username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
     }
 }

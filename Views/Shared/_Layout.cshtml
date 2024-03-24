@@ -46,6 +46,9 @@
                                 <a class="nav-link text-dark">Merhaba, @User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
+                                <a href="/profile/@User.Identity.Name" class="nav-link text-dark">My Profile</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
                         }else{

@@ -46,5 +46,11 @@ namespace MolaaApp.Data.Concrete
 
             }
         }
+
+        public void DeletePost(Post post)
+        {
+            _context.Posts.Remove(post);
+            _context.SaveChanges();
+        }
     }
 }

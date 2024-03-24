@@ -44,11 +44,11 @@ namespace MolaaApp.Controllers
         {
             var posts = _postRepository.Posts.Where(i => i.IsActive);//Isactive ekleyerek sadece true olanları göster dedim
             // IQueryable bir bilgi yani veri tabanından bilgileri şuan almıyorum sadece bağlantıyı sağladım
-            
+
             return View(new PostsViewModel
             {// index.cshtml sayfasına bilgileri gönderdim
                 Posts = await posts.ToListAsync()//burda diyorum ki ya bütün bilgileri gönder ya da if ile koşul sağlanırsa ordaki istediğim bilgileri sadece bana gönder
-        
+
             }); 
         }
 
@@ -241,6 +241,19 @@ namespace MolaaApp.Controllers
             return View(model);
         }
 
+        [Authorize] // kullanıcı giriş yapmadan post silme yapmasını engellemek için bunu ekledim
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var post = _postRepository.Posts.FirstOrDefault(p => p.PostId == id);
+            if (post == null)
+            {
+                return NotFound();
+            }
         
+            _postRepository.DeletePost(post);
+        
+            return RedirectToAction("List");
+        }
     }
 }

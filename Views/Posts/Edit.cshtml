@@ -1,0 +1,63 @@
+@model PostCreateViewModel
+
+<form action="Edit" method="post" enctype="multipart/form-data"><!--bunu böyle yapmamın nedeni burdaki check kısmını da controller içine gönderip güncelleme yapabilmek-->
+<div class="row">
+    <div class="col-9">
+        <div class="bg-white p-4">
+            <h1>Post Edit</h1>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="PostId">
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Url" class="form-label"></label>
+                    <input asp-for="Url" class="form-control">
+                    <span asp-validation-for="Url" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Content" class="form-label"></label>
+                    <textarea asp-for="Content" class="form-control"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="imageFile">Resim</label>
+                    <input type="file" name="imageFile" id="imageFile" class="form-control">
+                    
+                </div>
+                <div>
+                    <img src="~/img/@Model.Image" alt="" style="width: 100px;"><!--Resim güncellenmesi için gösterdim-->
+                    <input type="hidden" asp-for="@Model.Image"><!--Eğer yeni resim seçmediysek te eski hali kalsın diye,hidden demek kullanıcı bunu görmesini engelliyorum bu bilgiyi gizli alıyorum-->
+                </div>
+                
+                @if(User.IsInRole("admin"))
+                {
+                    <div class="form check mb-3">
+                        <input asp-for="IsActive" class="form-check-input">
+                        <label asp-for="IsActive" class="form-check-label"></label> <!-- Burada eksik olan kapatma etiketini ekledim -->                     
+                    </div>
+                }
+
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+    </div>
+</div>
+    
+</form>
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.0/tinymce.min.js"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#Content' //html editörüne çevirdim
+        });
+    </script>
+}

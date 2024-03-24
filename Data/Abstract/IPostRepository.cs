@@ -12,5 +12,6 @@ namespace MolaaApp.Data.Abstract
 
         void CreatePost(Post post);
         
+        void EditPost(Post post);
     }
 }

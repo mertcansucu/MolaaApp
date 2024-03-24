@@ -40,12 +40,18 @@ namespace MolaaApp.Controllers
             _likeRepository = likeRepository;
             
         }
-        public IActionResult Index(){
-            var model = new PostsViewModel{
-                Posts = _postRepository.Posts.ToList()
-                };
-                return View(model);
-            }
+        public async Task<IActionResult> Index()
+        {
+            var posts = _postRepository.Posts.Where(i => i.IsActive);//Isactive ekleyerek sadece true olanları göster dedim
+            // IQueryable bir bilgi yani veri tabanından bilgileri şuan almıyorum sadece bağlantıyı sağladım
+            
+            return View(new PostsViewModel
+            {// index.cshtml sayfasına bilgileri gönderdim
+                Posts = await posts.ToListAsync()//burda diyorum ki ya bütün bilgileri gönder ya da if ile koşul sağlanırsa ordaki istediğim bilgileri sadece bana gönder
+        
+            }); 
+        }
+
 
 
         [Authorize] // kullanıvı giriş yapmadan post ekleme yapmasını engellemek için bunu ekledim
@@ -164,6 +170,77 @@ namespace MolaaApp.Controllers
             }
             return View(await posts.ToListAsync());//veri tabanıyla bağlantı sağlayıp postları çağırdım
         }
+
+        [Authorize] // kullanıcı giriş yapmadan post ekleme yapmasını engellemek için bunu ekledim
+        public IActionResult Edit(int? id){
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var post = _postRepository.Posts.FirstOrDefault(i => i.PostId == id);//sayfa yüklenirken kullanıcın önceden seçtiği tagler varsa onlarda gelsin diye
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(new PostCreateViewModel {
+                PostId = post.PostId,
+                Title = post.Title,
+                Description = post.Description,
+                Content = post.Content,
+                Url = post.Url,
+                Image = post.Image,
+                IsActive = post.IsActive,
+                
+            });
+        }
+
+        
+
+        [Authorize] // kullanıcı giriş yapmadan post ekleme yapmasını engellemek için bunu ekledim
+        [HttpPost]
+        public async Task<IActionResult> Edit(PostCreateViewModel model, IFormFile? imageFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (imageFile != null)
+                {
+                    var extension = Path.GetExtension(imageFile.FileName);
+                    var randomFileName = string.Format($"{Guid.NewGuid().ToString()}{extension}");
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", randomFileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+                    model.Image = randomFileName;
+                }
+
+                var entityToUpdate = new Post
+                {
+                    PostId = model.PostId,
+                    Title = model.Title,
+                    Description = model.Description,
+                    Content = model.Content,
+                    Url = model.Url,
+                    Image = model.Image
+                };
+
+                if (User.FindFirstValue(ClaimTypes.Role) == "admin")
+                {
+                    entityToUpdate.IsActive = model.IsActive;
+                }
+
+                _postRepository.EditPost(entityToUpdate);
+                return RedirectToAction("List");
+            }
+
+        
+            return View(model);
+        }
+
         
     }
 }

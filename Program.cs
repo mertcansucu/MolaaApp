@@ -56,6 +56,8 @@ builder.Services.ConfigureApplicationCookie(options =>{//cookie ayarları
 builder.Services.AddScoped<IPostRepository, EfPostRepository>();//ben burda diyorum ki IPostRepository ben sanalı göderdiğimde sen bana EfPostRepository ile gerçek halini bana gönder,AddScoped olmasının nedeni her http reqository aynı nesneyi gönderir yani her http requestinde bir nesne yolla
 builder.Services.AddScoped<ICommentRepository, EfCommentRepository>();
 builder.Services.AddScoped<ILikeRepository, EfLikeRepository>();
+builder.Services.AddScoped<IMeetingRepository, EfMeetingRepository>();
+builder.Services.AddScoped<IUserMeetingRepository, EfUserMeetingRepository>();
 
 var app = builder.Build();
 

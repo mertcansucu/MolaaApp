@@ -39,6 +39,9 @@
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         @if(User.Identity?.IsAuthenticated == true){<!--kullanıcı girişi olduysa bu kısım görünsün-->
+                            <li class="nav item">
+                                <a href="/posts/list" class="nav-link text-dark">Posts</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark">Merhaba, @User.Identity.Name</a>
                             </li>

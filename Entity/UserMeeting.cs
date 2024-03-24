@@ -13,6 +13,6 @@ namespace MolaaApp.Entity
         public AppUser User { get; set; } = null!;
         public int MeetingId { get; set; }
         public Meeting Meeting { get; set; } = null!;
-        public bool IsAttending { get; set; }
+
     }
 }

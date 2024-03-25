@@ -9,5 +9,8 @@ namespace MolaaApp.Data.Abstract
     public interface IUserMeetingRepository
     {
         IQueryable<UserMeeting> userMeetings { get; }
+
+        void AddUserMeeting(UserMeeting userMeeting);
+        void RemoveUserMeeting(UserMeeting userMeeting);
     }
 }

@@ -90,7 +90,7 @@
 @section Scripts{
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {//sayfadaki bütün bileşenler yüklensin sonra çalışsın
+        $(document).ready(function() {
 
             $("#btnYorumKayit").click(function(){
                 $.ajax({
@@ -98,7 +98,7 @@
                     url: '@Url.Action("AddComment")',
                     dataType: 'json',
                     data: {
-                        PostId: $('#PostId').val(),//saoldaki action(postcontroller da verdiğim isim)sağdaki id ismi
+                        PostId: $('#PostId').val(),
                         UserName: $('#UserName').val(),
                         Text: $('#Text').val(),
                     },
@@ -109,7 +109,7 @@
                                 <img src="/img/${yorum.avatarImg}" alt="" class="avatar rounded-circle float-start me-3">
                                 <div>
                                     <div class="mb-2 d-flex">
-                                        <h6 class="me-2">${yorum.fullName} <!-- username yerine fullName'i kullan -->
+                                        <h6 class="me-2">${yorum.fullName}
                                         </h6>
                                         <small>${date.toLocaleDateString()}</small>
                                     </div>
@@ -125,7 +125,7 @@
 
                 });
 
-                return false;//buton eğer bilgileri almakta hata olursa sayfayı yenilemez ve çalışmaz
+                return false;
             });
 
             $.ajax({
@@ -140,31 +140,50 @@
                 }
             });
 
+            // Buton metnini kontrol etmek için işlem yap
+            var btnLike = $('#btnBegeni');
+            var postId = '@Model.PostId';
             
-            $("#btnBegeni").click(function(){
             $.ajax({
-                type: 'POST',
-                url: '@Url.Action("AddLike")',
+                type: 'GET',
+                url: '@Url.Action("CheckUserLike")',
                 dataType: 'json',
                 data: {
-                    PostId: $('#PostId').val(),
+                    postId: postId,
                 },
                 success: function(response) {
-                    var count = parseInt($("#likeCount").text());
+                    // Kullanıcı postu beğenmişse buton metnini "BEĞENME" olarak ayarla
                     if (response.liked) {
-                        $("#likeCount").text(count + 1);
+                        btnLike.text("BEĞENME");
                     } else {
-                        $("#likeCount").text(count - 1);
+                        btnLike.text("BEĞEN");
                     }
                 }
             });
+
+            // Beğen butonuna tıklandığında
+            btnLike.click(function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddLike")',
+                    dataType: 'json',
+                    data: {
+                        postId: postId,
+                    },
+                    success: function(response) {
+                        var count = parseInt($("#likeCount").text());
+                        if (response.liked) {
+                            $("#likeCount").text(count + 1);
+                            btnLike.text("BEĞENME");
+                        } else {
+                            $("#likeCount").text(count - 1);
+                            btnLike.text("BEĞEN");
+                        }
+                    }
+                });
         
-            return false;
-        });
-
-       
-
-
+                return false;
+            });
         });
     </script>
 }

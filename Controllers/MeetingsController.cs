@@ -31,7 +31,7 @@ namespace MolaaApp.Controllers
 
         public IActionResult Index(){
             var model = new MeetingsViewModel{
-                meetings = _meetingRepository.meetings.ToList(),
+                meetings = _meetingRepository.meetings.Include(m => m.UserMeetings).ToList(),
                 Users = _meetingRepository.meetings.Select(m => m.User).ToList()
             };
             return View(model);
@@ -66,5 +66,45 @@ namespace MolaaApp.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public JsonResult JoinMeeting(int meetingId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var existingUserMeeting = _userMeetingRepository.userMeetings.FirstOrDefault(um => um.UserId == userId && um.MeetingId == meetingId);
+
+            if (existingUserMeeting != null)
+            {
+                // Kullanıcı zaten bu toplantıya katılmışsa, katılımını iptal eder
+                _userMeetingRepository.RemoveUserMeeting(existingUserMeeting);
+                return Json(new { joined = false });
+            }
+            else
+            {
+                // Kullanıcı bu toplantıya daha önce katılmamışsa, katılımını ekler
+                _userMeetingRepository.AddUserMeeting(new UserMeeting { UserId = userId ?? "", MeetingId = meetingId });
+                return Json(new { joined = true });
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetParticipantCount(int meetingId)
+        {
+            var participantCount = _userMeetingRepository.userMeetings.Count(um => um.MeetingId == meetingId);
+            return Json(new { participantCount = participantCount });
+        }
+
+
+
+        [HttpGet]
+        public JsonResult CheckUserAttendance(int meetingId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var existingUserMeeting = _userMeetingRepository.userMeetings.FirstOrDefault(um => um.UserId == userId && um.MeetingId == meetingId);
+        
+            return Json(new { attended = existingUserMeeting != null });
+        }
+
+
     }
 }

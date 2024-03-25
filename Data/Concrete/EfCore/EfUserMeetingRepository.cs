@@ -18,6 +18,16 @@ namespace MolaaApp.Data.Concrete
 
         public IQueryable<UserMeeting> userMeetings => _context.userMeetings;
 
-        
+        public void AddUserMeeting(UserMeeting userMeeting)
+        {
+            _context.userMeetings.Add(userMeeting);
+            _context.SaveChanges();
+        }
+    
+        public void RemoveUserMeeting(UserMeeting userMeeting)
+        {
+            _context.userMeetings.Remove(userMeeting);
+            _context.SaveChanges();
+        }
     }
 }

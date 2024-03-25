@@ -10,5 +10,6 @@ namespace MolaaApp.Models
     {
         public List<Meeting> meetings {get; set;} = new();
         public List<AppUser> Users { get; set; } = new();
+        public List<UserMeeting> userMeetings { get; set; } = new();
     }
 }

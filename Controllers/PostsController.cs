@@ -157,6 +157,16 @@ namespace MolaaApp.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult CheckUserLike(int postId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var existingLike = _likeRepository.likes.FirstOrDefault(l => l.UserId == userId && l.PostId == postId);
+        
+            return Json(new { liked = existingLike != null });
+        }
+
+
         [Authorize] // kullanıcı giriş yapmadan post ekleme yapmasını engellemek için bunu ekledim
         public async Task<IActionResult> List(){//bu listenin amacı admin kişisi tüm postları görebiliyor
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

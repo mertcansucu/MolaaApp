@@ -1,5 +1,3 @@
-@model MeetingsViewModel
-
 <div class="container">
     <h1>Meetings</h1>
     @foreach (var meeting in Model.meetings)
@@ -13,17 +11,23 @@
                                 <h5 class="card-title">@meeting.Title</h5>
                                 <p class="card-text">@meeting.Description</p>
                                 <p class="card-text">Toplantı Tarihi: @meeting.StartTime.ToString("dd/MM/yyyy")</p>
-                                <p class="card-text">Toplantı Saati: @meeting.StartTimeHour</p>  
+                                <p class="card-text">Toplantı Saati: @meeting.StartTimeHour</p> 
+                                
                             </div>
                         </div>
                         <div class="col-md-4">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <div class="card-footer text-end" style="background-color: white">
-                                    <button type="button" class="btn btn-primary d-block mb-2">Toplantıya Katılım Durumu</button>
-                                    <button type="button" class="btn btn-success d-block">Toplantı Listesi</button>
-                                </div>
-                            }
+                            <div class="card-footer text-end" style="background-color: white">
+                                <h5><span class="participantCount_@meeting.MeetingId">@meeting.UserMeetings.Count</span> katılımcı</h5>
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <button data-meeting-id="@meeting.MeetingId" type="button" class="btn btn-primary btnJoin">KATIL</button>
+                                }
+                                else
+                                {
+                                    <p>Katılmak için uygulamaya giriş yapmalısınız. <a href="/Account/Login">Login</a></p>
+                                }
+                            </div>
                         </div>
                         <div class="card-footer text-start">
                             <span>Toplantıyı düzenleyen kişi: </span>
@@ -36,3 +40,62 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        
+    $(document).ready(function() {
+    // Buton metnini kontrol etmek için her toplantı için işlem yap
+    $('.btnJoin').each(function() {
+        var btnJoin = $(this);
+        var meetingId = btnJoin.data('meeting-id');
+        
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("CheckUserAttendance")',
+            dataType: 'json',
+            data: {
+                meetingId: meetingId,
+            },
+            success: function(response) {
+                // Kullanıcı toplantıya katılmışsa buton metnini "KATILMA" olarak ayarla
+                if (response.attended) {
+                    btnJoin.text("KATILMA");
+                } else {
+                    btnJoin.text("KATIL");
+                }
+            }
+        });
+    });
+
+    // Katıl butonuna tıklandığında
+    $(document).on('click', '.btnJoin', function(){
+        var btnJoin = $(this);
+        var meetingId = btnJoin.data('meeting-id');
+        var participantCountElement = $(".participantCount_" + meetingId);
+        
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("JoinMeeting")',
+            dataType: 'json',
+            data: {
+                meetingId: meetingId,
+            },
+            success: function(response) {
+                var count = parseInt(participantCountElement.text());
+                if (response.joined) {
+                    participantCountElement.text(count + 1);
+                    btnJoin.text("KATILMA");
+                } else {
+                    participantCountElement.text(count - 1);
+                    btnJoin.text("KATIL");
+                }
+            }
+        });
+    });
+});
+
+    </script>
+}
+
+

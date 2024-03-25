@@ -118,6 +118,50 @@ namespace MolaaApp.Controllers
         return View(meetings);
         }
 
+        [Authorize]
+        public IActionResult Edit(int? id){
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var meetings = _meetingRepository.meetings.FirstOrDefault(i => i.MeetingId == id);
+
+            if (meetings == null)
+            {
+                return NotFound();
+            }
+
+            return View(new MeetingCreateViewModel{
+                MeetingId = meetings.MeetingId,
+                Title = meetings.Title,
+                Description = meetings.Description,
+                StartTime = meetings.StartTime,
+                StartTimeHour = meetings.StartTimeHour
+                
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(MeetingCreateViewModel model){
+            if (ModelState.IsValid)
+            {
+                var entityToUpdate = new Meeting
+                {
+                    MeetingId = model.MeetingId,
+                    Title = model.Title,
+                    Description = model.Description,
+                    StartTime = model.StartTime,
+                    StartTimeHour = model.StartTimeHour
+                };
+
+                _meetingRepository.EditMeeting(entityToUpdate);
+                return RedirectToAction("List");
+            }
+
+            return View(model);
+        }
 
     }
 }

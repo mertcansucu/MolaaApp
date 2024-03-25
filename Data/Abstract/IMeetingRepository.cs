@@ -11,5 +11,7 @@ namespace MolaaApp.Data.Abstract
         IQueryable<Meeting> meetings {get; }
 
         void CreateMeeting(Meeting meeting); 
+
+        void EditMeeting(Meeting meeting); 
     }
 }

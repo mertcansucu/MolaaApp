@@ -23,5 +23,19 @@ namespace MolaaApp.Data.Concrete
             _context.meetings.Add(meeting);
             _context.SaveChanges();
         }
+
+        public void EditMeeting(Meeting meeting){
+            var entity = _context.meetings.FirstOrDefault(i => i.MeetingId == meeting.MeetingId);
+
+            if (entity != null)
+            {
+                entity.Title = meeting.Title;
+                entity.Description = meeting.Description;
+                entity.StartTime = meeting.StartTime;
+                entity.StartTimeHour = meeting.StartTimeHour;
+
+                _context.SaveChanges();
+            }
+        }
     }
 }

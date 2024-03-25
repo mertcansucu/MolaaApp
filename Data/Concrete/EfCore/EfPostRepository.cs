@@ -29,7 +29,7 @@ namespace MolaaApp.Data.Concrete
 
         public void EditPost(Post post)
         {
-            var entity = _context.Posts.FirstOrDefault(i => i.PostId == post.PostId);//Include(i => i.Tags) ifadesini kullanmazsam, Post nesnesi yüklenirken Tags nesneleri yüklenmez. Bu durumda, posta ait etiketler hafızada olmadığı için, bu etiketleri güncellemeye çalıştığımda da hata alırım bunu ekleyerek hatayı engelleyip güncellemeyi yaptım
+            var entity = _context.Posts.FirstOrDefault(i => i.PostId == post.PostId);
 
             if (entity != null)
             {

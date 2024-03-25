@@ -255,7 +255,7 @@ namespace MolaaApp.Controllers
 
             var user = _userManager
                        .Users
-                       .Include(x => x.Posts)
+                       .Include(x => x.Posts.Where(p => p.IsActive))
                        .Include(x => x.Comments)
                        .ThenInclude(x => x.Post)//üstekiler users tablosundan çektim ama burda commentsin içindeki postu çektim [@comment.Post.Title] profile.cshtml
                        .FirstOrDefault(x => x.UserName == username);

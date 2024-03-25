@@ -57,7 +57,8 @@ namespace MolaaApp.Controllers
                     {
                         Title = model.Title,
                         Description = model.Description,
-                        StartTime = DateTime.Now,
+                        StartTime = model.StartTime,
+                        StartTimeHour = model.StartTimeHour,
                         UserId = userId ?? ""
                     }
                 );

@@ -1,11 +1,11 @@
 @model MeetingsViewModel
 
 <div class="container">
+    <h1>Meetings</h1>
     @foreach (var meeting in Model.meetings)
     {
         <div class="row">
             <div class="col-md-8">
-                <h1>Meetings</h1>
                 <div class="card mb-3">
                     <div class="row g-0">
                         <div class="col-md-8">
@@ -13,9 +13,7 @@
                                 <h5 class="card-title">@meeting.Title</h5>
                                 <p class="card-text">@meeting.Description</p>
                                 <p class="card-text">Toplantı Tarihi: @meeting.StartTime.ToString("dd/MM/yyyy")</p>
-                                <!--
-                                    <p class="card-text">Toplantı Tarihi: @meeting.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
-                                -->
+                                <p class="card-text">Toplantı Saati: @meeting.StartTimeHour</p>  
                             </div>
                         </div>
                         <div class="col-md-4">

@@ -27,5 +27,14 @@ namespace MolaaApp.Models
         [Required]
         [Display(Name = "Açıklama")]
         public string? Description { get; set; }
+
+        [Required(ErrorMessage = "Başlangıç tarihi alanı zorunludur.")]
+        [Display(Name = "Başlangıç Tarihi")]
+        [DataType(DataType.DateTime)]
+        public DateTime StartTime { get; set; } // Kullanıcı tarafından seçilecek başlangıç tarihi
+
+        [Required]
+        [Display(Name = "Başlangıç Saati")]
+        public TimeSpan StartTimeHour { get; set; }
     }
 }

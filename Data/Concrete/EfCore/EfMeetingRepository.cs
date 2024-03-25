@@ -18,7 +18,7 @@ namespace MolaaApp.Data.Concrete
 
         public IQueryable<Meeting> meetings => _context.meetings;
 
-        public void MeetingPost(Meeting meeting)
+        public void CreateMeeting(Meeting meeting)
         {
             _context.meetings.Add(meeting);
             _context.SaveChanges();

@@ -10,6 +10,6 @@ namespace MolaaApp.Data.Abstract
     {
         IQueryable<Meeting> meetings {get; }
 
-        void MeetingPost(Meeting meeting); 
+        void CreateMeeting(Meeting meeting); 
     }
 }

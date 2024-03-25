@@ -163,5 +163,20 @@ namespace MolaaApp.Controllers
             return View(model);
         }
 
+        [Authorize] // kullanıcı giriş yapmadan post silme yapmasını engellemek için bunu ekledim
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var meetings = _meetingRepository.meetings.FirstOrDefault(p => p.MeetingId == id);
+            if (meetings == null)
+            {
+                return NotFound();
+            }
+        
+            _meetingRepository.DeleteMeeting(meetings);
+        
+            return RedirectToAction("List");
+        }
+
     }
 }

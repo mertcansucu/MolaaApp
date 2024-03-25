@@ -37,5 +37,10 @@ namespace MolaaApp.Data.Concrete
                 _context.SaveChanges();
             }
         }
+
+        public void DeleteMeeting(Meeting meeting){
+            _context.meetings.Remove(meeting);
+            _context.SaveChanges();
+        }
     }
 }

@@ -13,5 +13,7 @@ namespace MolaaApp.Data.Abstract
         void CreateMeeting(Meeting meeting); 
 
         void EditMeeting(Meeting meeting); 
+
+        void DeleteMeeting(Meeting meeting);
     }
 }

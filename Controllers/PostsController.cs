@@ -167,19 +167,20 @@ namespace MolaaApp.Controllers
         }
 
 
-        [Authorize] // kullanıcı giriş yapmadan post ekleme yapmasını engellemek için bunu ekledim
-        public async Task<IActionResult> List(){//bu listenin amacı admin kişisi tüm postları görebiliyor
+        [Authorize]
+        public async Task<IActionResult> List(){
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var role = User.FindFirstValue(ClaimTypes.Role);
-
-            var posts = _postRepository.Posts;//tüm post bilgilerimni aldım ama veritabnı ile çağırmadım
-
-            if (string.IsNullOrEmpty(role))//burda user rolu olmayanları bul dedim ve onlara sadece kendi paylaştığı postları görsün dedim
+        
+            var posts = await _postRepository.Posts.Include(p => p.User).ToListAsync(); // Burada Include metodunu ekledik
+        
+            if (string.IsNullOrEmpty(role))
             {
-                posts = posts.Where(i => i.UserId == userId);
+                posts = posts.Where(i => i.UserId == userId).ToList(); // Burada Where metodunu çağırdık
             }
-            return View(await posts.ToListAsync());//veri tabanıyla bağlantı sağlayıp postları çağırdım
+            return View(posts);
         }
+
 
         [Authorize] // kullanıcı giriş yapmadan post ekleme yapmasını engellemek için bunu ekledim
         public IActionResult Edit(int? id){

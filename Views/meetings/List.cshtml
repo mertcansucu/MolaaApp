@@ -1,31 +1,33 @@
-@model List<Post>
+@model List<Meeting>
 
 <div class="row">
     <div class="col-12">
-        <h2>Post List</h2>
-        <a href="/posts/create" class="btn btn-primary">New Post</a>
+        <h2>Meeting List</h2>
+        <a href="/meetings/create" class="btn btn-primary">New Post</a>
       
         <table class="table tabled-bordered mt-3">
             <thead>
                 <tr>
-                    <th>Post Sahibi</th>
-                    <th style="width: 200px;">Image</th>
+                    <th>Toplantı Sahibi</th>
                     <th>Title</th>
-                    <th>Is Active</th>
+                    <th>Description</th>
+                    <th>Toplantı Tarihi</th>
+                    <th>Toplantı Saati</th>
                     <th style="width: 125px;"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach(var item in Model){
                     <tr>
-                        <td>@item.User?.FullName</td> 
-                        <td><img src="/img/@item.Image" class="img-fluid" alt=""></td>
+                        <td>@item.User?.FullName</td>
                         <td>@item.Title</td>
-                        <td>@item.IsActive</td>                         
+                        <td>@item.Description</td>
+                        <td>@item.StartTime.ToString("dd/MM/yyyy")</td>
+                        <td>@item.StartTimeHour</td>
                         <td>
-                            <a href="/posts/edit/@item.PostId" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="/meetings/edit/@item.MeetingId" class="btn btn-sm btn-primary">Edit</a>
                             <form asp-action="Delete" method="post" onsubmit="return confirm('Emin misiniz?')" style="display: inline-block;">
-                                <input type="hidden" value="@item.PostId" name="id">
+                                <input type="hidden" value="@item.MeetingId" name="id">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
@@ -36,4 +38,3 @@
         </table>
     </div>
 </div>
-    

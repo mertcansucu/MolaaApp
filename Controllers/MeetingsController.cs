@@ -105,6 +105,19 @@ namespace MolaaApp.Controllers
             return Json(new { attended = existingUserMeeting != null });
         }
 
+        public async Task<IActionResult> List(){
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var role = User.FindFirstValue(ClaimTypes.Role);
+
+        var meetings = await _meetingRepository.meetings.Include(m => m.User).ToListAsync(); // Burada Include ve ToListAsync metodlarını ekledik
+
+        if (string.IsNullOrEmpty(role))
+        {
+            meetings = meetings.Where(i => i.UserId == userId).ToList(); // Burada Where metodunu çağırdık
+        }
+        return View(meetings);
+        }
+
 
     }
 }

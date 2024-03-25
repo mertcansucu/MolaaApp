@@ -39,8 +39,14 @@
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         @if(User.Identity?.IsAuthenticated == true){<!--kullanıcı girişi olduysa bu kısım görünsün-->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Posts" asp-action="Index">Posts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="meetings" asp-action="Index">Meetings</a>
+                            </li>
                             <li class="nav item">
-                                <a href="/posts/list" class="nav-link text-dark">Posts</a>
+                                <a href="/posts/list" class="nav-link text-dark">My Posts</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark">Merhaba, @User.Identity.Name</a>

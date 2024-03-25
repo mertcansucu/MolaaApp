@@ -1,0 +1,40 @@
+@model MeetingsViewModel
+
+<div class="container">
+    @foreach (var meeting in Model.meetings)
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Meetings</h1>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@meeting.Title</h5>
+                                <p class="card-text">@meeting.Description</p>
+                                <p class="card-text">Toplantı Tarihi: @meeting.StartTime.ToString("dd/MM/yyyy")</p>
+                                <!--
+                                    <p class="card-text">Toplantı Tarihi: @meeting.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+                                -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="card-footer text-end" style="background-color: white">
+                                    <button type="button" class="btn btn-primary d-block mb-2">Toplantıya Katılım Durumu</button>
+                                    <button type="button" class="btn btn-success d-block">Toplantı Listesi</button>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-footer text-start">
+                            <span>Toplantıyı düzenleyen kişi: </span>
+                            <img src="/img/@meeting.User.Image" alt="" class="avatar rounded-circle float me-3">
+                            <a href="/profile/@meeting.User.UserName">@meeting.User.FullName</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

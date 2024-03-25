@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MolaaApp.Data.Abstract;
 using MolaaApp.Entity;
 using MolaaApp.Models;
@@ -27,10 +28,16 @@ namespace MolaaApp.Controllers
             
         }
 
-        
+
         public IActionResult Index(){
-            return View();
+            var model = new MeetingsViewModel{
+                meetings = _meetingRepository.meetings.ToList(),
+                Users = _meetingRepository.meetings.Select(m => m.User).ToList()
+            };
+            return View(model);
         }
+
+        
 
         [Authorize] 
         public IActionResult Create(){

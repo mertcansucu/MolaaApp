@@ -1,6 +1,7 @@
 ## Techcareer.net Backend Bootcamp Bitirme Projesi
 
 ### Proje Tanımı:
+
 MolaaApp, kullanıcıların içerik paylaşımı yapabildiği, etkinlik veya toplantı düzenleyebildiği, paylaşılan içeriklere beğeni ve yorum yapabildiği bir web uygulamasıdır. Uygulama, kullanıcıların kimlik doğrulaması gerektiren bir dizi işlevi gerçekleştirebileceği etkileşimli bir ortam sunmaktadır.
 
 ### Proje Özellikleri ve Açıklamaları:
@@ -15,7 +16,7 @@ Kullanıcılar ikiye ayrılıyor, admin rolündeki kullanıcı ve rolsüz kullan
 
 3. Rol Bazlı Yetkilendirme
 
-Kullanıcılara roller atanır ve bu roller belirli işlevlere erişim sağlar. Admin rolü, kullanıcıları yönetme, düzenleme ve silme gibi yetkilere sahiptir. Rolsüz kullanıcılar sadece kendi profili, gönderileri, toplantı veya etkinliklerini düzenleyebilir. 
+Kullanıcılara roller atanır ve bu roller belirli işlevlere erişim sağlar. Admin rolü, kullanıcıları yönetme, düzenleme ve silme gibi yetkilere sahiptir. Rolsüz kullanıcılar sadece kendi profili, gönderileri, toplantı veya etkinliklerini düzenleyebilir.
 
 4. Gönderi Yönetimi
 
@@ -33,8 +34,8 @@ Bakımı kolaylaştırır: Tüm sayfalar aynı layout’u kullandığı için, l
 Tutarlı bir kullanıcı deneyimi sağlar: Ortak bir layout kullanmak, tüm sayfaların aynı görünüm ve hissiyatı korumasını sağlar. Bu, kullanıcıların siteyi kullanırken karşılaştıkları deneyimin tutarlı olmasını sağlar.
 Verimliliği artırır: Ortak bir layout kullanmak, geliştirme sürecini hızlandırır. Çünkü geliştiricilerin her sayfa için ayrı ayrı tasarım yapmasına gerek kalmaz.
 
-
 7. Güvenlik İşlemleri
+
 Uygulama, ASP.NET Core Identity ile sağlanan kimlik doğrulama ve yetkilendirme işlemlerine dayanır. Ayrıca, AJAX kullanarak sayfa yenilenmeden işlemler gerçekleştirilir, böylece kullanıcı deneyimi artırılır ve verimlilik sağlanır. Kullanıcılara özel yetkiler atanır ve sayfalara erişim bu yetkilere göre belirlenir. Örneğin, admin veya belirli rollerdeki kullanıcılar belirli sayfalara erişebilirken, diğer kullanıcılar erişemeyebilirler. URL’ye erişmeye çalışsalar bile erişim izni olmayan kullanıcılar hata mesajı alırlar.
 Ek Özellikler:
 Şifre Politikası Ayarları: Uygulama, kullanıcıların şifrelerinin güvenliğini sağlamak için belirli kurallar uygular. Örneğin, şifrelerin belirli bir uzunlukta olması ve belirli karakterlerin gerekliliği gibi.
@@ -44,33 +45,46 @@ Onaylı E-posta Gerekliliği: Kullanıcıların hesaplarını etkinleştirmek i�
 Yukarıda belirtilen özellikler ve teknolojiler sayesinde, MolaaApp güvenilir, kullanıcı dostu ve etkili bir web uygulamasıdır.
 
 8. View Component Kullanımı
+
 View Component yapısını kullanarak belirli sayfalarda tekrar eden öğeleri veya işlemleri kolayca yönetilmesi sağlanır. Örneğin, bu projede, NewPosts adında bir View Component oluşturulmuş ve bu component, en yeni gönderileri listelemek için kullanılmıştır. Tabi ki admin rolündeki kullanıcı postu yayınlarsa o zaman listede görünür.
 
-
 ### Sonuç:
-MolaaApp, kullanıcıların toplantıları yönetebildiği, içerik paylaşımı yapabildiği ve etkileşimli bir ortamda bulunduğu kapsamlı bir web uygulamasıdır. Kullanılan teknolojiler ve özellikler sayesinde güvenilir, kullanıcı dostu ve etkili bir deneyim sunar. Ayrıca, güvenlik önlemleri ve yetkilendirme mekanizmalarıyla veri güvenliği ve gizliliği sağlanmıştır.
 
+MolaaApp, kullanıcıların toplantıları yönetebildiği, içerik paylaşımı yapabildiği ve etkileşimli bir ortamda bulunduğu kapsamlı bir web uygulamasıdır. Kullanılan teknolojiler ve özellikler sayesinde güvenilir, kullanıcı dostu ve etkili bir deneyim sunar. Ayrıca, güvenlik önlemleri ve yetkilendirme mekanizmalarıyla veri güvenliği ve gizliliği sağlanmıştır.
 
 Bu projede, Entity Framework Core ve Repository Pattern kullanılarak veritabanı işlemleri soyutlandı ve kod tekrarı önlenmiştir. Bu sayede, veritabanı işlemlerini gerçekleştiren kod parçaları merkezi bir yerde toplanmış ve bu işlemler uygulamanın farklı bölümlerinde kolayca kullanılmıştır. Bu yapı, kodun bakımını ve yönetimini kolaylaştırmıştır.
 Proje kapsamında IComponent ve EFComponent adında iki farklı bileşen oluşturulmuştur. Bu bileşenler, Entity Framework bağlamının ve veri işlemlerinin soyutlanmasını sağlar. Böylece, veri tabanı işlemleri bağımsız bir bileşen aracılığıyla gerçekleştirilir ve kod tekrarı önlenir.
 Kullanıcıların yetkilendirilmesi ve kimlik doğrulama işlemleri, ASP.NET Core Identity ile sağlanmıştır. Bu sayede, kullanıcıların belirli işlevlere erişimi kontrol edilmiş ve veri güvenliği sağlanmıştır. Ayrıca, AJAX kullanılarak sayfa yenilenmeden işlemler gerçekleştirilmiştir. Bu da kullanıcı deneyimini artırmış ve verimliliği sağlamıştır.
 
-
 ### Kullanılan Teknolojiler ve Versiyonlar:
 
-* ASP.NET Core MVC (Version 7.0.11)
-* Entity Framework Core (Version 7.0.11)
-* Microsoft SQL Server
-* Razor Pages
-* HTML/CSS
-* JavaScript
-* jQuery
-* Bootstrap
-
+- ASP.NET Core MVC (Version 7.0.11)
+- Entity Framework Core (Version 7.0.11)
+- Microsoft SQL Server
+- Razor Pages
+- HTML/CSS
+- JavaScript
+- jQuery
+- Bootstrap
 
 ### Uygulamayı çalıştırmak için:
 
+```console
+git clone https://github.com/mertcansucu/MolaaApp.git
+cd MolaaApp/
+dotnet ef migrations add initialMigration
+dotnet ef database update
+dotnet watch run
+```
 
+### Default kullanıcı:
+
+```json
+{
+  "email": "mrtcnscc@gmail.com",
+  "parola": "Admin_123"
+}
+```
 
 ### Hazırlayan:
 

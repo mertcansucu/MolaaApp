@@ -19,9 +19,15 @@
         </div>
         <div class="bg-white nt-3">
             <div class="card border-0">
+                <!-- <div class="card-header pb-0">
+                    <h4><span id="likeCount">@Model.Likes.Count()</span> beğeni</h4>
+                    <p id="likedUsers">Beğenenler: @string.Join(", ", Model.Likes.Select(l => l.User.FullName))</p>
+                </div> -->
                 <div class="card-header pb-0">
                     <h4><span id="likeCount">@Model.Likes.Count()</span> beğeni</h4>
+                    <p id="likedUsers">Beğenenler: @string.Join(", ", Model.Likes.Select(l => l.User.FullName))</p>
                 </div>
+                
                 <div class="card-body">
                     @if(User.Identity!.IsAuthenticated){
                         <button id="btnBegeni" type="submit" class="btn btn-primary">BEĞEN</button>
@@ -137,6 +143,12 @@
                 },
                 success: function(response) {
                     $("#likeCount").text(response.likeCount);
+                    if (response.likedUsers.length > 0) {
+                        let usersList = response.likedUsers.join(", ");
+                        $("#likedUsers").text("Beğenenler: " + usersList);
+                    } else {
+                        $("#likedUsers").text("Henüz beğenen yok.");
+                    }
                 }
             });
 
@@ -162,7 +174,8 @@
             });
 
             // Beğen butonuna tıklandığında
-            btnLike.click(function(){
+            $("#btnBegeni").click(function() {
+                var postId = '@Model.PostId';
                 $.ajax({
                     type: 'POST',
                     url: '@Url.Action("AddLike")',
@@ -171,19 +184,28 @@
                         postId: postId,
                     },
                     success: function(response) {
+                        // Like sayısını güncelle
                         var count = parseInt($("#likeCount").text());
                         if (response.liked) {
                             $("#likeCount").text(count + 1);
-                            btnLike.text("BEĞENME");
+                            $("#btnBegeni").text("BEĞENME");
                         } else {
                             $("#likeCount").text(count - 1);
-                            btnLike.text("BEĞEN");
+                            $("#btnBegeni").text("BEĞEN");
+                        }
+                    
+                        // Beğenen kullanıcıları güncelle
+                        if (response.likedUsers.length > 0) {
+                            let usersList = response.likedUsers.join(", ");
+                            $("#likedUsers").text("Beğenenler: " + usersList);
+                        } else {
+                            $("#likedUsers").text("Henüz beğenen yok.");
                         }
                     }
-                });
-        
-                return false;
-            });
+        });
+
+        return false; // Sayfa yenilenmesin
+    });
         });
     </script>
 }

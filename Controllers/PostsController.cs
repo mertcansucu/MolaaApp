@@ -132,8 +132,14 @@ namespace MolaaApp.Controllers
         public JsonResult GetLikeCount(int postId)
         {
             var likeCount = _likeRepository.likes.Count(l => l.PostId == postId);
-            return Json(new { likeCount = likeCount });
+            var likedUsers = _likeRepository.likes
+                                    .Where(l => l.PostId == postId)
+                                    .Select(l => l.User.FullName)
+                                    .ToList();
+
+            return Json(new { likeCount, likedUsers });
         }
+
 
 
         [HttpPost]
@@ -147,13 +153,13 @@ namespace MolaaApp.Controllers
             {
                 // Kullanıcı daha önce bu gönderiyi beğenmişse like'ı kaldır
                 _likeRepository.RemoveLike(existingLike);
-                return Json(new { liked = false });
+                return Json(new { liked = false, likedUsers = _likeRepository.likes.Where(l => l.PostId == postId).Select(l => l.User.FullName).ToList() });
             }
             else
             {
                 // Kullanıcı daha önce bu gönderiyi beğenmemişse like'ı ekleyerek işlemi gerçekleştir
                 _likeRepository.AddLike(new Like { UserId = userId ?? "", PostId = postId });
-                return Json(new { liked = true });
+                return Json(new { liked = true, likedUsers = _likeRepository.likes.Where(l => l.PostId == postId).Select(l => l.User.FullName).ToList() });
             }
         }
 
